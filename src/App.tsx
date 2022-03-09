@@ -1,14 +1,27 @@
 import { Component } from 'react';
 import './App.css';
 
-type MyProps = {};
-type MyState = { name: string };
+type Monster = { name: string }
+type AppProps = {};
+type AppState = { monsters:Monster[] };
 
-class App extends Component<MyProps, MyState> {
+
+class App extends Component<AppProps, AppState> {
   constructor(props:any) {
     super(props);
     this.state = {
-      name: 'Michael'
+      monsters: [
+        {
+          name: "Linda"
+        }, 
+        {
+          name: "Frank"
+        }, 
+        {
+          name: "jack"
+        }
+      ]
+      
     }
 
   }
@@ -16,9 +29,9 @@ class App extends Component<MyProps, MyState> {
   render() {
     return (
       <div className="App">
-        <p>The App</p>
-        <p>Hello {this.state.name}</p>
-        <button>Change Name</button>
+        {this.state.monsters.map(
+          (monster, index) => <h1 key={index}>{monster.name}</h1>)
+        }
       </div>
     );
   }
