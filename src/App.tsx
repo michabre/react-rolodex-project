@@ -3,14 +3,15 @@ import './App.css';
 
 type Monster = { name: string, id: string }
 type AppProps = {};
-type AppState = { monsters:Monster[] };
+type AppState = { monsters:Monster[], searchField:string };
 
 
 class App extends Component<AppProps, AppState> {
   constructor(props:any) {
     super(props);
     this.state = {
-      monsters: []
+      monsters: [],
+      searchField: ''
     }
 
     console.log('constructor')
@@ -27,20 +28,31 @@ class App extends Component<AppProps, AppState> {
     console.log('componentDidMount')
   }
 
+  filterMonsters(event:any) {
+    const searchField = event.target.value
+    this.setState( 
+      () => { return { searchField } }
+    )
+  }
+
   render() {
     console.log('render')
+
+    const filteredMonsters = this.state.monsters.filter((monster) => {
+      let reGex = new RegExp(this.state.searchField, "ig");
+      return reGex.test(monster.name)
+    })
+
     return (
       <div className="App">
         <input 
           className='search-box' 
           type='search' 
           placeholder='Search Monsters' 
-          onChange={(event) => {
-            console.log(event.target.value)
-          }} 
+          onChange={this.filterMonsters.bind(this)} 
         />
 
-        {this.state.monsters.map(
+        {filteredMonsters.map(
           (monster) => <div key={monster.id}>
               <h1>{monster.name}</h1>
             </div>)
