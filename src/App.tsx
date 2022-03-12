@@ -1,9 +1,17 @@
 import { Component } from 'react';
+import CardList from './components/card-list/card-list.component';
 import './App.css';
 
-type Monster = { name: string, id: string }
-type AppProps = {};
-type AppState = { monsters:Monster[], searchField:string };
+type Monster = { 
+  name: string, 
+  id: string 
+}
+type AppProps = {
+};
+type AppState = { 
+  monsters: Monster[], 
+  searchField:string 
+};
 
 
 class App extends Component<AppProps, AppState> {
@@ -28,7 +36,7 @@ class App extends Component<AppProps, AppState> {
     console.log('componentDidMount')
   }
 
-  filterMonsters(event:any) {
+  onSearchChange(event:any) {
     const searchField = event.target.value
     this.setState( 
       () => { return { searchField } }
@@ -38,8 +46,11 @@ class App extends Component<AppProps, AppState> {
   render() {
     console.log('render')
 
-    const filteredMonsters = this.state.monsters.filter((monster) => {
-      let reGex = new RegExp(this.state.searchField, "ig");
+    const { monsters, searchField } = this.state
+    const { onSearchChange } = this;
+
+    const filteredMonsters = monsters.filter((monster) => {
+      let reGex = new RegExp(searchField, "ig");
       return reGex.test(monster.name)
     })
 
@@ -49,14 +60,16 @@ class App extends Component<AppProps, AppState> {
           className='search-box' 
           type='search' 
           placeholder='Search Monsters' 
-          onChange={this.filterMonsters.bind(this)} 
+          onChange={onSearchChange.bind(this)} 
         />
-
+{/* 
         {filteredMonsters.map(
           (monster) => <div key={monster.id}>
               <h1>{monster.name}</h1>
             </div>)
-        }
+        } */}
+
+        <CardList monsters={filteredMonsters} />
       </div>
     );
   }
