@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, useEffect, useState } from 'react';
 import SearchBox from './components/search-box/search-box.component';
 import CardList from './components/card-list/card-list.component';
 
@@ -16,15 +16,40 @@ type AppState = {
   searchField:string 
 };
 
-class App extends Component<AppProps, AppState> {
+const App = () => {
+
+  const [monsters, setMonsters] = useState<Monster[]>([])
+  const [searchField, setSearchField] = useState<string>("")
+
+  const onSearchChange = (event:any) => {
+    setSearchField(event.target.value)
+  }
+
+  const filteredMonsters = (arr:Monster[]) => {
+    return arr.filter((monster:Monster) => {
+      let reGex = new RegExp(searchField, "ig");
+      return reGex.test(monster.name)
+    })
+  }
+
+  //useEffect
+
+  return (
+    <div className="App">
+      <h1>Monsters Rolodex</h1>
+      <SearchBox className='monsters-search' onChangeHandler={onSearchChange.bind(this)} placeholder='Search Monsters'  />
+      <CardList monsters={filteredMonsters} />
+    </div>
+  );
+}
+
+class AppClassBased extends Component<AppProps, AppState> {
   constructor(props:any) {
     super(props);
     this.state = {
       monsters: [],
       searchField: ''
     }
-
-    console.log('constructor')
   }
 
   componentDidMount() {
