@@ -1,28 +1,35 @@
 import { Component} from 'react'
+import Card from '../card/card.component'
+import './card-list.styles.css'
+
+type Monster = {
+    id: string,
+    name: string,
+    email: string
+}
 
 type CardListProps = {
-    monsters: any
+    monsters: Monster[]
   }
 
 class CardList extends Component<CardListProps> {
-    constructor(props:any) {
-        super(props)
-    }
-
     buildList() {
-        return this.props.monsters.map(
-            (monster:any) => <div key={monster.id}>
-                <h1>{monster.name}</h1>
-              </div>)
+      const { monsters } = this.props
+      return monsters.map(
+        (monster:Monster) => {
+          return (
+            <Card key={monster.id} monster={monster} />
+          )
+        }
+      )
     }
 
     render() {
-        return (
-            <>
-              <h2>List of Monsters</h2>
-              {this.buildList()}
-            </>
-        )
+      return (
+          <div className="card-list">
+            {this.buildList()}
+          </div>
+      )
     }
 }
 
