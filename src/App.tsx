@@ -1,4 +1,4 @@
-import { Component, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SearchBox from './components/search-box/search-box.component';
 import CardList from './components/card-list/card-list.component';
 
@@ -14,6 +14,7 @@ const App = () => {
   console.log('render')
 
   const [monsters, setMonsters] = useState<Monster[]>([])
+  const [filteredMonsters, setFilteredMonsters] = useState<Monster[]>(monsters)
   const [searchField, setSearchField] = useState<string>("")
 
   const onSearchChange = (event:React.ChangeEvent<HTMLInputElement>) => {
@@ -21,17 +22,22 @@ const App = () => {
     setSearchField(target.value)
   }
 
-  const filteredMonsters = monsters.filter((monster) => {
-      let reGex = new RegExp(searchField, "ig");
-      return reGex.test(monster.name)
-  })
-
   useEffect(
     () => {
       fetch('https://jsonplaceholder.typicode.com/users')
       .then(response => response.json())
       .then((users) => setMonsters( users ))
   }, [])
+
+  useEffect(
+    () => {
+    const newFilteredMonsters = monsters.filter((monster) => {
+      let reGex = new RegExp(searchField, "ig");
+      return reGex.test(monster.name)
+    })
+
+    setFilteredMonsters(newFilteredMonsters)
+  }, [monsters, searchField])
 
   return (
     <div className="App">

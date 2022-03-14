@@ -7,17 +7,14 @@ type Monster = {
   email: string
 }
 
-const CardList = ({ monsters }:{ monsters:Monster[]}) => {
-  return (
-    <div className="card-list">
-      {monsters.map(
-      (monster:Monster) => {
-        return (
-          <Card key={monster.id} monster={monster} />
-        )
-      })}
-    </div>
-  )
-}
+const CardList = ({ monsters }:{ monsters:Monster[]}) => (
+  <div className="card-list">
+    {monsters.map(
+      (monster:Monster) => (
+        <Card key={monster.id} monster={monster} />
+      )
+    )}
+  </div>
+)
 
 export default CardList
